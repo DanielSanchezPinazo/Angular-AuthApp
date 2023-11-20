@@ -103,6 +103,14 @@ button:hover {
     cursor: pointer;
 }
 
+.btn2 {
+
+  border: blue;
+  color: blue;
+  width: 100px;
+  height: 50px;
+}
+
 /*//////////////////////////////////////////////////////////////////
 [ Utility ]*/
 .txt1 {
