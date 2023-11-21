@@ -4,6 +4,7 @@ import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environments';
 
 import { AuthStatus, CheckTokenResponse, LoginResponse, User } from '../interfaces';
+import { RegisterResponse } from '../interfaces/register-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +52,23 @@ export class AuthService {
       );
   };
 
+  register( name: string, email: string, password: string ){//}: Observable<boolean> {
+
+    const url = `${ this._baseUrl }/auth/register`;
+    const body = { name, email, password };
+
+    return this._http.post<RegisterResponse>( url, body )
+    .pipe(
+
+      map( ({ user, token }) => this.setAuthentication( user, token )),
+      catchError( err => {
+
+        console.log( err );
+        return throwError( () => err.error.message );
+      })
+    );
+  };
+
   checkAuthStatus(): Observable<boolean> {
 
     const url = `${ this._baseUrl }/auth/check-token`;
@@ -58,8 +76,8 @@ export class AuthService {
 
     if ( !token ) {
 
-      this.logout()
-      return of( false )
+      this.logout();
+      return of( false );
     };
 
     const headers = new HttpHeaders().set( "Authorization", `Bearer ${ token }` );

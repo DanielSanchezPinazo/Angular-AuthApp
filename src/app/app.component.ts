@@ -42,7 +42,6 @@ export class AppComponent {
 
         this._router.navigateByUrl( "/auth/login" );
         break;
-
     };
   });
 }
